@@ -1,4 +1,155 @@
-class CarRepository {}
+class CarRepository {
+  constructor(database, fileManager) {
+    this.tableName = 'cars';
+    this.database = database;
+    this.fileManager = fileManager;
+  }
+
+  createTable() {
+    this.database.prepare(`DROP TABLE IF EXISTS  ${this.tableName}`).run();
+    this.database
+      .prepare(
+        `CREATE TABLE IF NOT EXISTS ${this.tableName} (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          img TEXT,
+          brand TEXT,
+          model TEXT,
+          year INTEGER,
+          kms INTEGER,
+          color TEXT,
+          ac TEXT,
+          passengers INTEGER,
+          automatic TEXT,
+          createdAt INTEGER,
+          editedAt INTEGER
+        )`,
+      )
+      .run();
+  }
+
+  getAll() {
+    const cars = this.database
+      .prepare(
+        `SELECT
+          id,
+          img,
+          brand,
+          model,
+          year,
+          kms,
+          color,
+          ac,
+          passengers,
+          automatic 
+        FROM ${this.tableName}`,
+      )
+      .expand(true)
+      .all();
+    return cars.map((e) => e.cars);
+  }
+
+  getOne(id) {
+    const query = `SELECT
+        id,
+        img,
+        brand,
+        model,
+        year,
+        kms,
+        color,
+        ac,
+        passengers,
+        automatic 
+      FROM ${this.tableName} 
+      WHERE id = ${id}`;
+    const car = this.database.prepare(query).get();
+    return car;
+  }
+
+  create(newCar) {
+    const query = `INSERT INTO ${this.tableName} ( 
+      img,
+      brand, 
+      model, 
+      year, 
+      kms, 
+      color, 
+      ac, 
+      passengers, 
+      automatic,
+      createdAt,
+      editedAt
+    ) VALUES (
+      '${newCar.img}',
+      '${newCar.brand}',
+      '${newCar.model}',
+       ${newCar.year},
+       ${newCar.kms},
+      '${newCar.color}',
+      '${newCar.ac}',
+       ${newCar.passengers},
+      '${newCar.automatic}',
+       ${Date.now()},
+       ${Date.now()}
+      );`;
+    const response = this.database.prepare(query).run();
+    return response.lastInsertRowid;
+  }
+
+  edit(editCar, id) {
+    const query = `UPDATE ${this.tableName} 
+      SET
+        brand = '${editCar.brand}',
+        model = '${editCar.model}',
+        year = ${editCar.year},
+        kms = ${editCar.kms},
+        color = '${editCar.color}',
+        ac = '${editCar.ac}',
+        passengers = ${editCar.passengers},
+        automatic = '${editCar.automatic}',
+        editedAt = ${Date.now()}       
+      WHERE id = ${id}`;
+    this.database.prepare(query).run();
+  }
+
+  delete(id) {
+    const query = `DELETE
+        FROM ${this.tableName}
+        WHERE id = ${id}`;
+    this.database.prepare(query).run();
+  }
+
+  renameCarImage(id) {
+    this.fileManager.readdir('public/img', (err, files) => {
+      if (err) throw err;
+      files.forEach((file) => {
+        if (file.match(/^temp./)) {
+          this.fileManager.rename(
+            'public/img/temp.png',
+            `public/img/${file.replace('temp', id)}`,
+            (err) => {
+              if (err) throw err;
+            },
+          );
+        }
+      });
+    });
+  }
+
+  deleteCarImage(id) {
+    const regex = `^${id}.`;
+    this.fileManager.readdir('public/img', (err, files) => {
+      if (err) throw err;
+      files.forEach((file) => {
+        if (file.match(regex)) {
+          this.fileManager.unlink(`public/img/${file}`, (err) => {
+            if (err) throw err;
+          });
+        }
+      });
+    });
+  }
+}
 
 module.exports = { CarRepository };
 

@@ -1,6 +1,5 @@
 class CarController {
-  constructor(CarEntity, CarService, fileSaver) {
-    this.CarEntity = CarEntity;
+  constructor(CarService, fileSaver) {
     this.CarService = CarService;
     this.fileSave = fileSaver;
   }
@@ -8,49 +7,61 @@ class CarController {
   async getAll(req, res) {
     try {
       const cars = await this.CarService.getAll();
-      return res.send({ message: cars });
+      return res.send({
+        message: 'Successfully retieved cars',
+        data: cars,
+      });
     } catch (error) {
-      return res.send({ message: error.message });
+      return res.send({ message: error.message, stack: error.stack });
     }
   }
 
   async getOne(req, res) {
     try {
-      const car = await this.CarService.getOne(req.param.id);
-      return res.send({ message: car });
+      const car = await this.CarService.getOne(req.params.id);
+      return res.send({
+        message: 'Successfully retieved car',
+        data: car,
+      });
     } catch (error) {
-      return res.send({ message: error.message });
+      return res.send({ message: error.message, stack: error.stack });
     }
   }
 
   async create(req, res) {
     try {
-      const newCar = new this.CarEntity(req.body);
+      const newCar = req.body;
       const carCreated = await this.CarService.create(newCar);
-      return res.send({ message: carCreated });
+      return res.send({
+        message: 'Successfully created car',
+        data: carCreated,
+      });
     } catch (error) {
-      return res.send({ message: error.message });
+      return res.send({ message: error.message, stack: error.stack });
     }
   }
 
   async edit(req, res) {
     try {
-      const car = new this.CarEntity(req.body);
-      const carId = req.param.id;
+      const car = req.body;
+      const carId = req.params.id;
       const carEdited = await this.CarService.edit(car, carId);
-      return res.send({ message: carEdited });
+      return res.send({
+        message: 'Successfully edited car',
+        data: carEdited,
+      });
     } catch (error) {
-      return res.send({ message: error.message });
+      return res.send({ message: error.message, stack: error.stack });
     }
   }
 
   async delete(req, res) {
     try {
-      const carId = req.param.id;
-      const carDeleted = await this.CarService.delete(carId);
-      return res.send({ message: carDeleted });
+      const carId = req.params.id;
+      await this.CarService.delete(carId);
+      return res.send({ message: 'Successfully deleted car' });
     } catch (error) {
-      return res.send({ message: error.message });
+      return res.send({ message: error.message, stack: error.stack });
     }
   }
 }

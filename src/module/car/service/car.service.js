@@ -2,24 +2,35 @@ class CarService {
   constructor(CarRepository) {
     this.CarRepository = CarRepository;
   }
-  getAll() {
-    console.log('all cars fetched');
+
+  async getAll() {
+    const cars = await this.CarRepository.getAll();
+    return cars;
   }
 
-  getOne() {
-    console.log('one car fetched');
+  async getOne(id) {
+    const car = await this.CarRepository.getOne(id);
+    return car;
   }
 
-  create() {
-    console.log('one car created');
+  async create(newCar) {
+    const carCreatedId = await this.CarRepository.create(newCar);
+    const carCreated = await this.CarRepository.getOne(carCreatedId);
+    await this.CarRepository.renameCarImage(carCreatedId);
+    return carCreated;
   }
 
-  edit() {
-    console.log('one car edited');
+  async edit(editCar, id) {
+    await this.CarRepository.edit(editCar, id);
+    await this.CarRepository.deleteCarImage(id);
+    await this.CarRepository.renameCarImage(id);
+    const carEdited = await this.CarRepository.getOne(id);
+    return carEdited;
   }
 
-  delete() {
-    console.log('one car deleted');
+  async delete(id) {
+    await this.CarRepository.delete(id);
+    await this.CarRepository.deleteCarImage(id);
   }
 }
 

@@ -1,6 +1,18 @@
 class Car {
-  constructor({ id, brand, model, year, kms, color, ac, passengers, automatic }) {
+  constructor({
+    id,
+    img,
+    brand,
+    model,
+    year,
+    kms,
+    color,
+    ac,
+    passengers,
+    automatic,
+  }) {
     this.id = id;
+    this.img = img;
     this.brand = brand;
     this.model = model;
     this.year = year;
