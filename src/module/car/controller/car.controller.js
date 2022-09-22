@@ -1,57 +1,59 @@
 class CarController {
-
-  constructor(CarEntity,CarService,fileSaver) {
+  constructor(CarEntity, CarService, fileSaver) {
     this.CarEntity = CarEntity;
     this.CarService = CarService;
     this.fileSave = fileSaver;
   }
 
-  getAll(req, res) {
+  async getAll(req, res) {
     try {
-      this.CarService.getAll();
+      const cars = await this.CarService.getAll();
+      return res.send({ message: cars });
     } catch (error) {
-      return(res.send({message: error.message}))
+      return res.send({ message: error.message });
     }
   }
 
-  getOne(req, res) {
+  async getOne(req, res) {
     try {
-      this.CarService.getOne(req.param.id);
+      const car = await this.CarService.getOne(req.param.id);
+      return res.send({ message: car });
     } catch (error) {
-      return(res.send({message: error.message}))
+      return res.send({ message: error.message });
     }
   }
 
-  create(req, res) {
+  async create(req, res) {
     try {
       const newCar = new this.CarEntity(req.body);
-      this.CarService.create(newCar);
+      const carCreated = await this.CarService.create(newCar);
+      return res.send({ message: carCreated });
     } catch (error) {
-      return(res.send({message: error.message}))
+      return res.send({ message: error.message });
     }
   }
 
-  edit(req, res) {
+  async edit(req, res) {
     try {
-      const editedCar = new this.CarEntity(req.body);
-      this.CarService.edit(editedCar,req.param.id);      
+      const car = new this.CarEntity(req.body);
+      const carId = req.param.id;
+      const carEdited = await this.CarService.edit(car, carId);
+      return res.send({ message: carEdited });
     } catch (error) {
-      return(res.send({message: error.message}))
+      return res.send({ message: error.message });
     }
   }
 
-  delete(req, res) {
+  async delete(req, res) {
     try {
-    this.CarService.delete(req.param.id);
+      const carId = req.param.id;
+      const carDeleted = await this.CarService.delete(carId);
+      return res.send({ message: carDeleted });
     } catch (error) {
-      return(res.send({message: error.message}))
+      return res.send({ message: error.message });
     }
   }
-
-
-
-
-
 }
 
-module.exports = {CarController}
+module.exports = { CarController };
+

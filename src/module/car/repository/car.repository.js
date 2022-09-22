@@ -1,5 +1,4 @@
-class CarRepository {
+class CarRepository {}
 
-}
+module.exports = { CarRepository };
 
-module.exports = {CarRepository}
