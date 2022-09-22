@@ -1,6 +1,7 @@
 class CarService {
   constructor(CarRepository) {
     this.CarRepository = CarRepository;
+    this.fileSave = this.CarRepository.fileSave;
   }
 
   async getAll() {

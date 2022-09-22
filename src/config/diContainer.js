@@ -8,17 +8,25 @@ const Database = require('better-sqlite3');
 const multer = require('multer');
 const fs = require('fs');
 
-function initializeFilesaver() {
+const filePath = 'public/img/';
+const fileTemporalName = 'temp';
+
+function initializeFileManager() {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './public/img');
+      cb(null, `./${filePath}`);
     },
     filename: function (req, file, cb) {
       cb(null, 'temp' + file.originalname.match(/.[a-zA-Z]*$/));
     },
   });
   const upload = multer({ storage: storage });
-  return upload.single('img');
+  return {
+    filePath,
+    fileTemporalName,
+    fileSave: upload.single('img'),
+    fileHandler: fs,
+  };
 }
 
 function initializeDatabase() {
@@ -32,18 +40,14 @@ function initializeDatabase() {
 function configureDI() {
   const container = new DIContainer();
   container.add({
-    fileManager: fs,
-    fileSave: factory(initializeFilesaver),
+    fileManager: factory(initializeFileManager),
     database: factory(initializeDatabase),
     carRepository: object(CarRepository).construct(
       use('database'),
       use('fileManager'),
     ),
     carService: object(CarService).construct(use('carRepository')),
-    carController: object(CarController).construct(
-      use('carService'),
-      use('fileSave'),
-    ),
+    carController: object(CarController).construct(use('carService')),
   });
 
   return container;

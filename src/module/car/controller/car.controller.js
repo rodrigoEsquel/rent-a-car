@@ -1,7 +1,7 @@
 class CarController {
-  constructor(CarService, fileSaver) {
+  constructor(CarService) {
     this.CarService = CarService;
-    this.fileSave = fileSaver;
+    this.fileSave = this.CarService.fileSave;
   }
 
   async getAll(req, res) {

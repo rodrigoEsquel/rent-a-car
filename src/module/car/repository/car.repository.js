@@ -2,7 +2,11 @@ class CarRepository {
   constructor(database, fileManager) {
     this.tableName = 'cars';
     this.database = database;
-    this.fileManager = fileManager;
+    this.filePath = fileManager.filePath;
+    this.fileTemporalName = fileManager.fileTemporalName;
+    this.fileSave = fileManager.fileSave;
+    console.log('in constructor', this.fileSave);
+    this.fileHandler = fileManager.fileHandler;
   }
 
   createTable() {
@@ -28,9 +32,7 @@ class CarRepository {
   }
 
   getAll() {
-    const cars = this.database
-      .prepare(
-        `SELECT
+    const query = `SELECT
           id,
           img,
           brand,
@@ -41,10 +43,8 @@ class CarRepository {
           ac,
           passengers,
           automatic 
-        FROM ${this.tableName}`,
-      )
-      .expand(true)
-      .all();
+        FROM ${this.tableName}`;
+    const cars = this.database.prepare(query).expand(true).all();
     return cars.map((e) => e.cars);
   }
 
@@ -120,13 +120,14 @@ class CarRepository {
   }
 
   renameCarImage(id) {
-    this.fileManager.readdir('public/img', (err, files) => {
+    const regex = `^${this.fileTemporalName}.`;
+    this.fileHandler.readdir(this.filePath, (err, files) => {
       if (err) throw err;
       files.forEach((file) => {
-        if (file.match(/^temp./)) {
-          this.fileManager.rename(
-            'public/img/temp.png',
-            `public/img/${file.replace('temp', id)}`,
+        if (file.match(regex)) {
+          this.fileHandler.rename(
+            `${this.filePath}${file}`,
+            `${this.filePath}${file.replace(this.fileTemporalName, id)}`,
             (err) => {
               if (err) throw err;
             },
@@ -138,11 +139,11 @@ class CarRepository {
 
   deleteCarImage(id) {
     const regex = `^${id}.`;
-    this.fileManager.readdir('public/img', (err, files) => {
+    this.fileHandler.readdir(this.filePath, (err, files) => {
       if (err) throw err;
       files.forEach((file) => {
         if (file.match(regex)) {
-          this.fileManager.unlink(`public/img/${file}`, (err) => {
+          this.fileHandler.unlink(`${this.filePath}${file}`, (err) => {
             if (err) throw err;
           });
         }
