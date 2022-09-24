@@ -3,7 +3,6 @@ class CarRepository {
     this.tableName = 'cars';
     this.database = database;
     this.filePath = fileManager.filePath;
-    this.fileTemporalName = fileManager.fileTemporalName;
     this.fileSave = fileManager.fileSave;
     console.log('in constructor', this.fileSave);
     this.fileHandler = fileManager.fileHandler;
@@ -100,6 +99,7 @@ class CarRepository {
     const query = `UPDATE ${this.tableName} 
       SET
         brand = '${editCar.brand}',
+        img = '${editCar.img}',
         model = '${editCar.model}',
         year = ${editCar.year},
         kms = ${editCar.kms},
@@ -119,35 +119,12 @@ class CarRepository {
     this.database.prepare(query).run();
   }
 
-  renameCarImage(id) {
-    const regex = `^${this.fileTemporalName}.`;
-    this.fileHandler.readdir(this.filePath, (err, files) => {
-      if (err) throw err;
-      files.forEach((file) => {
-        if (file.match(regex)) {
-          this.fileHandler.rename(
-            `${this.filePath}${file}`,
-            `${this.filePath}${file.replace(this.fileTemporalName, id)}`,
-            (err) => {
-              if (err) throw err;
-            },
-          );
-        }
-      });
-    });
-  }
-
   deleteCarImage(id) {
-    const regex = `^${id}.`;
-    this.fileHandler.readdir(this.filePath, (err, files) => {
+    const query = `SELECT img FROM ${this.tableName} WHERE id = ${id}`;
+    const { img: imgPath } = this.database.prepare(query).get();
+    console.log(imgPath);
+    this.fileHandler.unlink(imgPath, (err) => {
       if (err) throw err;
-      files.forEach((file) => {
-        if (file.match(regex)) {
-          this.fileHandler.unlink(`${this.filePath}${file}`, (err) => {
-            if (err) throw err;
-          });
-        }
-      });
     });
   }
 }

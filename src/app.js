@@ -9,7 +9,7 @@ const {
 const app = express();
 
 app.use('/public', express.static('public'));
-app.use(morgan('combined'));
+app.use(morgan('tiny'));
 
 const container = configureDI();
 configureCarRouter(app, container);

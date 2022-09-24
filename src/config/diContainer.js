@@ -9,7 +9,6 @@ const multer = require('multer');
 const fs = require('fs');
 
 const filePath = 'public/img/';
-const fileTemporalName = 'temp';
 
 function initializeFileManager() {
   const storage = multer.diskStorage({
@@ -17,13 +16,12 @@ function initializeFileManager() {
       cb(null, `./${filePath}`);
     },
     filename: function (req, file, cb) {
-      cb(null, 'temp' + file.originalname.match(/.[a-zA-Z]*$/));
+      cb(null, `${Date.now()}${file.originalname.match(/.[a-zA-Z]*$/)}`);
     },
   });
   const upload = multer({ storage: storage });
   return {
     filePath,
-    fileTemporalName,
     fileSave: upload.single('img'),
     fileHandler: fs,
   };

@@ -30,20 +30,26 @@ class CarController {
 
   async create(req, res) {
     try {
-      const newCar = req.body;
+      const newCar = {
+        ...req.body,
+        img: `${req.file.destination}${req.file.filename}`,
+      };
       const carCreated = await this.CarService.create(newCar);
       return res.send({
         message: 'Successfully created car',
         data: carCreated,
       });
     } catch (error) {
-      return res.send({ message: error.message, stack: error.stack });
+      return res.send({ message: error.message, data: error.stack });
     }
   }
 
   async edit(req, res) {
     try {
-      const car = req.body;
+      const car = {
+        ...req.body,
+        img: `${req.file.destination}${req.file.filename}`,
+      };
       const carId = req.params.id;
       const carEdited = await this.CarService.edit(car, carId);
       return res.send({
