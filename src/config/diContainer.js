@@ -1,4 +1,5 @@
 const { default: DIContainer, object, use, factory } = require('rsdi');
+const morgan = require('morgan');
 const {
   CarRepository,
   CarService,
@@ -7,6 +8,7 @@ const {
 const Database = require('better-sqlite3');
 const multer = require('multer');
 const fs = require('fs');
+const nunjucks = require('nunjucks');
 
 const filePath = 'public/img/';
 
@@ -28,10 +30,7 @@ function initializeFileManager() {
 }
 
 function initializeDatabase() {
-  const carDatabase = new Database('data/data.db', {
-    verbose: console.log,
-  });
-  console.log(carDatabase);
+  const carDatabase = new Database('data/data.db');
   return carDatabase;
 }
 
@@ -60,10 +59,11 @@ function configureCarRouter(app, diContainer) {
       carController.fileSave.bind(carController),
       carController.create.bind(carController),
     );
+  app.route('/cars/new').get(carController.newCarForm.bind(carController));
   app
     .route('/cars/:id')
-    .get(carController.getOne.bind(carController))
-    .put(
+    .get(carController.editCarForm.bind(carController))
+    .post(
       carController.fileSave.bind(carController),
       carController.edit.bind(carController),
     )
@@ -75,9 +75,22 @@ function configureCarTable(diContainer) {
   carRepository.createTable.bind(carRepository)();
 }
 
+function configureViewRender(app) {
+  nunjucks.configure('src/view/', {
+    autoescape: true,
+    express: app,
+  });
+}
+
+function configureLog(app) {
+  app.use(morgan('tiny'));
+}
+
 module.exports = {
   configureDI,
   configureCarRouter,
   configureCarTable,
+  configureViewRender,
+  configureLog,
 };
 

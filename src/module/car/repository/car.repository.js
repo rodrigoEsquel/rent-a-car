@@ -4,7 +4,6 @@ class CarRepository {
     this.database = database;
     this.filePath = fileManager.filePath;
     this.fileSave = fileManager.fileSave;
-    console.log('in constructor', this.fileSave);
     this.fileHandler = fileManager.fileHandler;
   }
 
@@ -122,10 +121,10 @@ class CarRepository {
   deleteCarImage(id) {
     const query = `SELECT img FROM ${this.tableName} WHERE id = ${id}`;
     const { img: imgPath } = this.database.prepare(query).get();
-    console.log(imgPath);
-    this.fileHandler.unlink(imgPath, (err) => {
-      if (err) throw err;
-    });
+    imgPath ??
+      this.fileHandler.unlink(imgPath, (err) => {
+        if (err) throw err;
+      });
   }
 }
 

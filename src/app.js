@@ -1,18 +1,21 @@
 const express = require('express');
-const morgan = require('morgan');
+
 const {
   configureDI,
   configureCarRouter,
   configureCarTable,
+  configureViewRender,
+  configureLog,
 } = require('./config/diContainer.js');
 
 const app = express();
 
 app.use('/public', express.static('public'));
-app.use(morgan('tiny'));
 
 const container = configureDI();
 configureCarRouter(app, container);
 configureCarTable(container);
+configureViewRender(app);
+configureLog(app);
 
 module.exports = app;

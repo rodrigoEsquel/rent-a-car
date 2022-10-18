@@ -7,7 +7,7 @@ class CarController {
   async getAll(req, res) {
     try {
       const cars = await this.CarService.getAll();
-      return res.send({
+      return res.render('layout/carList.njk', {
         message: 'Successfully retieved cars',
         data: cars,
       });
@@ -16,29 +16,52 @@ class CarController {
     }
   }
 
-  async getOne(req, res) {
+  async newCarForm(req, res) {
     try {
-      const car = await this.CarService.getOne(req.params.id);
-      return res.send({
-        message: 'Successfully retieved car',
-        data: car,
+      const car = {
+        id: '',
+        img: '',
+        brand: '',
+        model: '',
+        year: '',
+        kms: '',
+        color: '',
+        ac: '',
+        passengers: '',
+        automatic: '',
+      };
+      return res.render('layout/form.njk', {
+        message: 'Successfully retieved cars',
+        path: '../',
+        car,
       });
     } catch (error) {
-      return res.send({ message: error.message, stack: error.stack });
+      return res.send({ message: error.message, data: error.stack });
+    }
+  }
+
+  async editCarForm(req, res) {
+    try {
+      const carId = req.params.id;
+      const car = await this.CarService.getOne(carId);
+      return res.render('layout/form.njk', {
+        message: 'Successfully retieved car',
+        path: `./${carId}`,
+        car,
+      });
+    } catch (error) {
+      return res.send({ message: error.message, data: error.stack });
     }
   }
 
   async create(req, res) {
     try {
-      const newCar = {
-        ...req.body,
-        img: `${req.file.destination}${req.file.filename}`,
-      };
-      const carCreated = await this.CarService.create(newCar);
-      return res.send({
-        message: 'Successfully created car',
-        data: carCreated,
-      });
+      const newCar = req.file
+        ? { ...req.body, img: `${req.file.path.replace(/\\/g, '/')}` }
+        : req.body;
+      await this.CarService.create(newCar);
+      console.log('Car sucessfully created');
+      return res.redirect(301, '/cars/');
     } catch (error) {
       return res.send({ message: error.message, data: error.stack });
     }
@@ -46,16 +69,12 @@ class CarController {
 
   async edit(req, res) {
     try {
-      const car = {
-        ...req.body,
-        img: `${req.file.destination}${req.file.filename}`,
-      };
+      const car = req.file
+        ? { ...req.body, img: `${req.file.path.replace(/\\/g, '/')}` }
+        : req.body;
       const carId = req.params.id;
-      const carEdited = await this.CarService.edit(car, carId);
-      return res.send({
-        message: 'Successfully edited car',
-        data: carEdited,
-      });
+      await this.CarService.edit(car, carId);
+      return res.redirect(301, '/cars/');
     } catch (error) {
       return res.send({ message: error.message, stack: error.stack });
     }
@@ -65,7 +84,8 @@ class CarController {
     try {
       const carId = req.params.id;
       await this.CarService.delete(carId);
-      return res.send({ message: 'Successfully deleted car' });
+      console.log('Car sucessfully deleted');
+      return res.redirect(301, '/cars/');
     } catch (error) {
       return res.send({ message: error.message, stack: error.stack });
     }
