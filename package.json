@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ."
+    "dev": "nodemon src/index.js"
   },
   "author": "Rodrigo Fernandez",
   "license": "MIT",
   "dependencies": {
+    "@types/jest": "^29.1.2",
     "better-sqlite3": "^7.6.2",
     "bulma": "^0.9.4",
     "express": "^4.18.1",
