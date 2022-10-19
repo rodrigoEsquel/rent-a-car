@@ -4,7 +4,7 @@
   "description": "rent-a-car application (Frontent and Backend)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "dev": "nodemon src/index.js"
   },
   "author": "Rodrigo Fernandez",
@@ -34,3 +34,4 @@
   },
   "homepage": "https://github.com/rodrigoEsquel/rent-a-car#readme"
 }
+

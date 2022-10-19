@@ -31,7 +31,7 @@ class CarController {
         automatic: '',
       };
       return res.render('layout/form.njk', {
-        message: 'Successfully retieved cars',
+        message: 'Successfully retrieved form',
         path: '../',
         car,
       });
