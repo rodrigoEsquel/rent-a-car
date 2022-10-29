@@ -4,8 +4,10 @@
   "description": "rent-a-car application (Frontent and Backend)",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
-    "dev": "nodemon src/index.js"
+    "test": "jest ",
+    "test:cy": "cypress open",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "author": "Rodrigo Fernandez",
   "license": "MIT",
@@ -20,7 +22,9 @@
     "rsdi": "^2.2.2"
   },
   "devDependencies": {
+    "cypress": "^10.10.0",
     "eslint": "^8.23.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "jest": "^29.0.3",
     "nodemon": "^2.0.19"
   },
@@ -34,4 +38,3 @@
   },
   "homepage": "https://github.com/rodrigoEsquel/rent-a-car#readme"
 }
-
