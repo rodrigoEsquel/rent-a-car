@@ -4,6 +4,7 @@ const {
   CarRepository,
   CarService,
   CarController,
+  validateCar,
 } = require('../module/car/car.module.js');
 const Database = require('better-sqlite3');
 const multer = require('multer');
@@ -34,16 +35,25 @@ function initializeDatabase() {
   return carDatabase;
 }
 
+function initializeCarValidator() {
+  const carValidator = validateCar;
+  return carValidator;
+}
+
 function configureDI() {
   const container = new DIContainer();
   container.add({
     fileManager: factory(initializeFileManager),
     database: factory(initializeDatabase),
+    carValidator: factory(initializeCarValidator),
     carRepository: object(CarRepository).construct(
       use('database'),
       use('fileManager'),
     ),
-    carService: object(CarService).construct(use('carRepository')),
+    carService: object(CarService).construct(
+      use('carRepository'),
+      use('carValidator'),
+    ),
     carController: object(CarController).construct(use('carService')),
   });
 

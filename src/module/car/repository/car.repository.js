@@ -121,7 +121,7 @@ class CarRepository {
   deleteCarImage(id) {
     const query = `SELECT img FROM ${this.tableName} WHERE id = ${id}`;
     const { img: imgPath } = this.database.prepare(query).get();
-    imgPath ??
+    if (imgPath)
       this.fileHandler.unlink(imgPath, (err) => {
         if (err) throw err;
       });

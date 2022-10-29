@@ -10,7 +10,9 @@ const repositoryMock = {
   fileSave: jest.fn(),
 };
 
-const service = new CarService(repositoryMock);
+const validatorMock = jest.fn().mockReturnValue(true);
+
+const service = new CarService(repositoryMock, validatorMock);
 
 describe('Car Service', () => {
   afterEach(() => {
