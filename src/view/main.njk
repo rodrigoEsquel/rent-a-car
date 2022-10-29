@@ -9,13 +9,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 <body>
- <nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-      <img src="/public/img/logo.png">
-  </div>
-
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
+ <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-start">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/cars/">
+        <img src="/public/img/logo.png">
+      </a>
+    </div>
+    <div class="navbar-menu">
       <a class="navbar-item" href="/cars/">
         Home
       </a>
@@ -23,14 +24,13 @@
         Documentation
       </a>
     </div>
-
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-link" href="/cars/new/">
-            <strong>Create car</strong>
-          </a>
-        </div>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <div class="buttons">
+        <a class="button is-link" href="/cars/new/">
+          <strong>Create car</strong>
+        </a>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
 </div>
 
 
-<footer class="footer has-background-link-light">
+<footer id="footer" class="footer has-background-link-light">
   <div class="content has-text-centered">
     <p>
       <strong>Rent-A-Car</strong> by <a href="https://github.com/rodrigoEsquel/">Rodrigo Fernandez</a>. The source code is licensed
