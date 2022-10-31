@@ -1,0 +1,145 @@
+{% extends "../main.njk" %}
+
+{% block content %}
+<div class="container is-max-desktop m-5">
+  <form action="{{path}}" method="POST" enctype="multipart/form-data">
+  
+    <div class="field is-hidden">
+      <label class="label">ID</label>
+      <div class="control">
+        <input class="input" type="number" placeholder="1" name="id" value="{{car.id}}">
+      </div>
+    </div>
+  
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Brand</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control">
+            <input class="input" type="text" placeholder="The car brand" name="brand" value="{{car.brand}}" required> 
+          </p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Model</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control">
+            <input class="input" type="text" placeholder="The car model" name="model" value="{{car.model}}" required>
+          </p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Year</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control">
+            <input class="input" type="number" placeholder="The car year of " name="year" value="{{car.year}}" required>
+          </p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Kilometers</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control">
+            <input class="input" type="number" placeholder="The car kilometers" name="kms" value="{{car.kms}}" required>
+          </p>
+        </div>
+      </div>
+    </div>
+  
+  <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Passengers</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control">
+            <input class="input" type="number" placeholder="The car passengers" name="passengers" value="{{car.passengers}}" required>
+          </p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Color</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control">
+            <input class="input" type="text" placeholder="The car color" name="color" value="{{car.color}}" required>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Air Conditioner</label>
+      </div>
+      <div class="field-body">
+        <div class="select is-fullwidth">
+          <select name="ac" class="is-fullwidth">
+            <option>With air conditioner</option>
+            <option>Without air conditioner</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Transmission</label>
+      </div>
+      <div class="field-body">
+        <div class="select is-fullwidth">
+          <select name="automatic" class="is-fullwidth">
+            <option>Manual</option>
+            <option>Automatic</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <div class="field is-horizontal ">
+      <div class="field-label is-normal">
+        <label class="label">Image</label>
+      </div>
+      <div class="field-body">
+        <div class="file-cta is-fullwidth">
+          <input class="file-input" type="file" name="img" required>
+
+              Choose a file…
+
+      </div>
+      </div>
+    </div>
+  
+    <div class="field is-grouped is-justify-content-center">
+      <div class="control">
+        <input class="button is-link" type="submit" value="Submit">
+      </div>
+      <div class="control">
+        <a class="button is-link is-light" href="/cars/">Cancel</a>
+      </div>
+    </div>
+  
+  </form>
+</div>
+{% endblock %}

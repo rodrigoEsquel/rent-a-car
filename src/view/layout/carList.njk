@@ -1,0 +1,45 @@
+{% extends "../main.njk" %}
+
+{% block content %}
+  <div class="columns is-multiline is-centered" id="container">
+  {% for car in data %}
+    <div class="column is-two-thirds-mobile is-half-tablet is-one-third-desktop is-one-quarter-widescreen">
+
+   	  <div class="card block ">
+  	  	<div class="card-image">
+  	  		<figure class="image is-4by3">
+  	  			<img src="../{{car.img}}" alt="Placeholder image">
+  	  		</figure>
+  	  	</div>
+
+  	  	<div class="card-content">
+  	  		<div class="media">					
+  	  			<div class="media-content">
+  	  				<p class="title is-4">{{car.brand}} {{car.model}}</p>
+  	  				<p class="subtitle is-6">{{car.year}} - {{car.kms}} kms</p>
+  	  			</div>
+  	  		</div>    
+  	  		<div class="content">
+  	  			<ul>
+							<li>{{car.automatic}} transmission</li>
+							<li>Capacity {{car.passengers}} passengers</li>
+							<li>{{car.color}}</li>
+							<li>{{car.ac}}</li>
+            </ul>
+  	  		</div>
+  	  	</div>
+
+  	  	<footer class="card-footer">
+  	  		<a href="/cars/" class="card-footer-item">Rent</a>
+  	  		<a href="/cars/{{car.id}}" class="card-footer-item edit-button">Edit</a>
+  	  		<a href="/cars/" class="card-footer-item delete-button" onclick="fetch('/cars/{{car.id}}', {method: 'DELETE'})">Delete</a>
+  	  	</footer>
+  		</div>
+		</div>
+
+			{% else %}
+				<h1>No cars to display yet!</h1>
+			{% endfor %}
+  </div>
+
+{% endblock %}

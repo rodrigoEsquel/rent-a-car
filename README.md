@@ -1,18 +1,28 @@
 # crud-clubes
 
-Un CRUD/ABM (Create, Retrieve, Update, Delete ó Alta, Baja, Modificación) de clubes de fútbol
+A CRUD (Create, Retrieve, Update, Delete) application around a Rent-A-Car Service
 
-## Diagrama
+## C4 Model
 
-![Diagramas de C4 nivel 1, 2 y 3 para CRUD clubes](./clubes_crud.jpg)
+### L1
 
-## Cómo instalar y correr este proyecto
+![C4 Model level 1 diagram](L1.png)
 
-El proyecto se instala con `npm install`
+### L2
 
-Una vez instalado, hay que copiar el archivo `.env.dist` y a su copia, ponerle `.env` y completar los valores que están puestos dentro `LLAVE=VALOR`.
+![C4 Model level 2 diagram](L2.png)
 
-El proyecto se corre con:
+### L3
+
+![C4 Model level 3 diagram](L3.png)
+
+## Getting started
+
+Install dependecies with `npm install`
+
+Once installed, rename the `.env.dist` file to `.env` and edit the `KEY=VALUES` according to your use case.
+
+To run the proyect:
 
 ```
 npm run start # corre el proyecto en modo producción
@@ -25,31 +35,27 @@ npm run test:ui:dev # corre pruebas de interfaz con un navegador con el que se p
 npm run test:integration # corre pruebas de newman (postman)
 ```
 
-## Estructura de este proyecto
+## Proyect structure
 
-Adaptado de https://softwareontheroad.com/ideal-nodejs-project-structure/
+Adapted from https://softwareontheroad.com/ideal-nodejs-project-structure/
 
-| Ruta                             | explicación                                                                                                                   |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| data                             | contiene las bases de datos de SQLite                                                                                         |
-| data/database.db                 | base de datos principal del proyecto                                                                                          |
-| data/session.db                  | base de datos para guardar las sesiones de nuestro proyecto                                                                   |
-| public                           | contiene los archivos estáticos que va a servir el navegador, acá se guardan las imágenes subidas                             |
-| src                              | contiene toda nuestra aplicación                                                                                              |
-| src/app.js                       | punto de entrada de nuestra aplicación                                                                                        |
-| src/config                       | configuración de nuestra aplicación                                                                                           |
-| src/config/di.js                 | configuración de dependencias (Dependency Injection)                                                                          |
-| src/module                       | contiene cada uno de los módulos de nuestra aplicación                                                                        |
-| src/module/view                  | contiene vistas comunes a todos los módulos                                                                                   |
-| src/module/view/layout           | contiene layouts comunes a todos los módulos                                                                                  |
-| src/module/view/layout/base.html | contiene el layout base de todas las vistas                                                                                   |
-| src/module/abstractController.js | controlador abstracto base (por ahora sin funcionalidad)                                                                      |
-| src/module/club                  | todo lo que tiene que ver con clubes                                                                                          |
-| src/module/club/controller       | punto de entrada a nuestro controlador, maneja requests de HTTP                                                               |
-| src/module/club/entity           | la entidad Club de nuestro dominio                                                                                            |
-| src/module/club/job              | trabajos en bache realizados por este módulo (en este caso hay un único trabajo que se baja datos de la API de open football) |
-| src/module/club/mapper           | mapea desde o hacia la entidad de club                                                                                        |
-| src/module/club/repository       | interactúa con la capa de acceso a datos (DAL) y devuelve entidad(es)                                                         |
-| src/module/club/service          | lógica de negocio de nuestra aplicación                                                                                       |
-| src/module/club/view             | archivos de presentación (interfaz) que se procesarán del lado del servidor (SSR, server side rendering)                      |
-| src/module/club/module.js        | archivo de entrada a este módulo que lo inicializa                                                                            |
+| Path                          | Description                                                                             |
+| ----------------------------- | --------------------------------------------------------------------------------------- |
+| data                          | SQLite databases folder                                                                 |
+| data/database.db              | Main database                                                                           |
+| public/img                    | Stores the static image files used by the server, here the images of the cars are saved |
+| src                           | Contains the application                                                                |
+| src/index.js                  | Entry point of the applicaition                                                         |
+| src/app.js                    | Configuration of the application                                                        |
+| src/config/di.js              | Dependency Injection manager                                                            |
+| src/module                    | Contains the modules of the application                                                 |
+| src/module/view               | Contains the views of the application                                                   |
+| src/module/view/layout        | Contains the diferrent layouts                                                          |
+| src/module/view/main.njk      | Main view of the application                                                            |
+| src/module/car                | Car module                                                                              |
+| src/module/car/controller     | Handles http petitions and responses                                                    |
+| src/module/car/entity         | Entity of the model                                                                     |
+| src/module/car/repository     | Interacts with the database and the files                                               |
+| src/module/car/service        | Logic of the module                                                                     |
+| src/module/club/car.module.js | Entry point to the module                                                               |
+
